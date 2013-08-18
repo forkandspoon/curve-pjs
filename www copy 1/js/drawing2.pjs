@@ -1,0 +1,24 @@
+var path;
+
+function doLayout() {
+    if (path) {
+        path.remove();
+    }
+    path = new Path({
+        //strokeColor: 'black' /* using fullyselected for now, looks more legit */
+    }); 
+    
+    path.moveTo([120,670]);
+    path.quadraticCurveTo([120, (670-70)/2], [0, 70]);
+
+    path.fullySelected = true;
+    paper.view.draw();
+
+    console.log('this is from drawing2.pjs');
+}
+
+loader.drawing2 = {};
+
+loader.drawing2.layout = function() { /* loader.js calls this function which calls doLayout() up top */
+    doLayout();
+};

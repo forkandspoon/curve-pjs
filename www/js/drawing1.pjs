@@ -1,0 +1,85 @@
+var path;
+var reference;
+var points;
+
+function doLayout(data, calibrate) {
+
+    if (path) {
+        path.remove();
+    }
+
+    path = new Path({
+        segments: [],
+        //strokeColor: 'black', /* using fullyselected for now, looks more legit */
+    }); 
+
+    points = [{"x": (paper.view.size.width/2), "y": (paper.view.size.height - 50)}];
+
+    for (var i = 0; i < data.length; i++){
+    	points.push({
+    		x: points[i].x - (700/11)*Math.sin((Math.PI*data[i])/180),
+            y: points[i].y - (700/11)*Math.cos((Math.PI*data[i])/180)
+    	});
+    };
+    
+    path.addSegments(points);
+
+
+    if (calibrate == 1){
+    	reference = new Path({
+	    	segments: points,
+	        strokeColor: 'green',
+	        strokeWidth: 5,
+	        strokeCap: 'round'
+	    });
+	    
+	}else if (calibrate == 2){
+
+		reference = new Path({
+	    	segments: [[paper.view.size.width/2, paper.view.size.height - 50], [75, 625], [60, 570], [70, 490], [100, 450], [110, 380], [125, 330], [125, 270], [110, 210], [100, 160], [105, 70]],
+	        strokeColor: 'green',
+	        strokeWidth: 5,
+	        strokeCap: 'round'
+	    });
+	}else{
+		reference = new Path({
+			
+		})
+	}
+
+	/* basically you can use the length of the line, eg: path.length
+    and it will go along the length until the length you specify, and then give you the point location. similarly
+    can be used to find the normal vector or degrees using tan? */
+    /* console.log(path.getNormalAt(path.length/11));
+    var point = path.getPointAt(path.length/11); 
+    var normal = path.getNormalAt(path.length/11);
+    normal.length = 20;
+    var line = new Path({
+    	segments: [point, point + normal],
+    	strokeColor: 'red'
+    }); */
+
+    path.fullySelected = true;
+
+    path.simplify(60);
+    path.smooth();
+
+
+    reference.simplify(60);
+    reference.smooth();
+
+
+    paper.view.draw();
+
+    //console.log('this is from drawing1.pjs');
+    //console.log('drawing1.pjs: ' + data);
+}
+
+
+
+
+loader.drawing1 = {};
+
+loader.drawing1.layout = function(data, calibrate) { /* loader.js calls this function which calls doLayout() up top */
+    doLayout(data, calibrate);
+};

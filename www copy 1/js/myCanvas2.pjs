@@ -1,0 +1,25 @@
+var path;
+
+function doLayout(){
+	if (path) { // basically, if we're running doLayout(), if the spine code already exists, to remove it
+	path.remove();
+	}
+
+	var path = new Path({
+                segments: [[120, 670], [75, 625], [60, 570], [70, 490], [100, 450], [110, 380], [125, 330], [125, 270], [110, 210], [100, 160], [105, 70]],
+                strokeColor: 'black',
+                closed: false
+    }); 
+
+    path.fullySelected = true;
+    path.simplify(60);
+    path.smooth();
+
+    paper.view.draw();
+};
+
+loader.myCanvas2 = {};
+
+loader.myCanvas1.layout = function() {
+	doLayout();
+};

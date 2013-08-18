@@ -1,0 +1,43 @@
+var path;
+var reference;
+
+function doLayout(data) {
+    if (path) {
+        path.remove();
+    }
+    path = new Path({
+        //strokeColor: 'black' /* using fullyselected for now, looks more legit */
+    }); 
+
+    reference = new Path({
+        segments: [[paper.view.size.width/2, paper.view.size.height - 50], [paper.view.size.width/2, 50]],
+        strokeColor: 'green',
+        strokeWidth: 5,
+        strokeCap: 'round'
+    });
+
+    path.moveTo([paper.view.size.width/2, paper.view.size.height - 50]);
+    path.quadraticCurveTo([paper.view.size.width/2, 250], [120 + 700*Math.sin((Math.PI*data)/180), 750 - 700*Math.cos((Math.PI*data)/180)]);
+    
+    
+
+    path.fullySelected = true;
+/*    console.log(700*sinLookup(data));
+    console.log(700*cosLookup(data)); */
+
+    
+
+    paper.view.draw();
+
+    //console.log(data);
+    //console.log(120 + 700*Math.sin((data/180)*Math.PI));
+    //console.log(750 - 700*Math.cos((data/180)*Math.PI));
+    //console.log('this is from drawing2.pjs');
+    //console.log('drawing2.pjs: ' + data);
+}
+
+loader.drawing2 = {};
+
+loader.drawing2.layout = function(data) { /* loader.js calls this function which calls doLayout() up top */
+    doLayout(data);
+};
